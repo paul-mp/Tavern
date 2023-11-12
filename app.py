@@ -9,3 +9,8 @@ def index():
 @app.route("/forum", methods=["GET"])
 def forum():
     return render_template("forum.html", forum=True)
+
+@app.route("/profile", methods=["GET"])
+def profile():
+    return render_template("profile.html", forum=True)
+
