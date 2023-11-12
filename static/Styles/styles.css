@@ -1,0 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url('/static/background-image-name');
+}
+
+header,
+main {
+    flex: 1;
+}
+
+.header {
+    color: black;
+    font-size: 150px;
+}
+
+
+footer {
+    background-color: #333;
+    bottom: 0;
+}
+
+
+.text {
+    margin-right: 500px;
+    margin-left: 500px;
+    text-align: center;
+}
+
+.list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
