@@ -3,41 +3,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url('/static/background-image-name');
-}
-
-header,
-main {
-    flex: 1;
-}
-
-.header {
-    color: black;
-    font-size: 150px;
-}
-
-
-footer {
-    background-color: #333;
-    bottom: 0;
-}
-
-
-.text {
-    margin-right: 500px;
-    margin-left: 500px;
-    text-align: center;
-}
-
-.list {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/87adf66c-7944-4128-8b9b-d892d63090b4/dg494ne-73897a86-cb9f-42e2-a141-142197a210d9.jpg/v1/fill/w_1192,h_670,q_70,strp/dnd_tavern_by_brokenteapotstudios_dg494ne-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MjE2MCIsInBhdGgiOiJcL2ZcLzg3YWRmNjZjLTc5NDQtNDEyOC04YjliLWQ4OTJkNjMwOTBiNFwvZGc0OTRuZS03Mzg5N2E4Ni1jYjlmLTQyZTItYTE0MS0xNDIxOTdhMjEwZDkuanBnIiwid2lkdGgiOiI8PTM4NDAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.-bR3wROIpu_rFnKw1XTvMbBhJe3LqZWmzjNhsSDNXUA');
+    background-repeat: no-repeat;
+    background-size: cover;
 }
