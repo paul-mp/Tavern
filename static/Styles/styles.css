@@ -7,3 +7,10 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+.indexTitle{
+    color: #DC3545;
+}
+footer{
+    position: sticky;
+    bottom: 0;
+}
