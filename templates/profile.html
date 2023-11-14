@@ -1,6 +1,66 @@
 {% extends '_templates.html' %}
 {% block title %}Hello!{% endblock %}
 {% block body %}
-    <h1>Test</h1>
-    <h1>Profile</h1>
+<h1 class="text-center">DND Character Sheet</h1>
+
+    <form>
+        <div class="mb-3">
+            <label for="charName" class="form-label">Name:</label>
+            <input type="text" class="form-control" id="charName">
+        </div>
+
+        <div class="mb-3">
+            <label for="charClass" class="form-label">Class:</label>
+            <input type="text" class="form-control" id="charClass">
+        </div>
+
+        <div class="mb-3">
+            <label for="charRace" class="form-label">Race:</label>
+            <input type="text" class="form-control" id="charRace">
+        </div>
+
+        <div class="mb-3">
+            <label for="charLevel" class="form-label">Level:</label>
+            <input type="number" class="form-control" id="charLevel" min="1" value="1">
+        </div>
+
+        <div class="mb-3">
+            <label for="charBackground" class="form-label">Background:</label>
+            <input type="text" class="form-control" id="charBackground">
+        </div>
+
+        <h2 class="text-center">Attributes</h2>
+
+        <div class="mb-3">
+            <label for="str" class="form-label">Strength:</label>
+            <input type="number" class="form-control" id="str" min="1" value="10">
+        </div>
+
+        <div class="mb-3">
+            <label for="dex" class="form-label">Dexterity:</label>
+            <input type="number" class="form-control" id="dex" min="1" value="10">
+        </div>
+
+        <div class="mb-3">
+            <label for="con" class="form-label">Constitution:</label>
+            <input type="number" class="form-control" id="con" min="1" value="10">
+        </div>
+
+        <div class="mb-3">
+            <label for="int" class="form-label">Intelligence:</label>
+            <input type="number" class="form-control" id="int" min="1" value="10">
+        </div>
+
+        <div class="mb-3">
+            <label for="wis" class="form-label">Wisdom:</label>
+            <input type="number" class="form-control" id="wis" min="1" value="10">
+        </div>
+
+        <div class="mb-3">
+            <label for="cha" class="form-label">Charisma:</label>
+            <input type="number" class="form-control" id="cha" min="1" value="10">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </form>
 {% endblock %}
