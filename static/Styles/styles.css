@@ -7,10 +7,24 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
-.indexTitle{
-    color: #DC3545;
+
+h1 {
+    color: #f5f5dc;
 }
-footer{
+
+.card-title {
+    color: #ffd700;
+}
+
+.card-text {
+    color: #ffd700;
+}
+
+.tags {
+    color: red;
+}
+
+footer {
     position: sticky;
     bottom: 0;
 }
