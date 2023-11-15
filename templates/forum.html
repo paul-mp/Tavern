@@ -1,47 +1,18 @@
 {% extends '_templates.html' %}
-{% block title %}Welcome to Tavern{% endblock %}
+{% block title %}Forum{% endblock %}
 {% block body %}
-<h1 class="text-center">Discuss your Adventures</h1>
+<h1>Forum</h1>
 
-<!-- Discussion Form -->
-<form>
-    <div class="mb-3">
-        <label for="discussionTitle" class="form-label">Discussion Title:</label>
-        <input type="text" class="form-control" id="discussionTitle" required>
+<!-- show discussions -->
+{% for post in posts %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h2 class="card-title">{{ post.title }}</h2>
+        <p class="card-text">{{ post.content }}</p>
+        <p><b>Tags:</b> <span class="tags">{{ post.tags|join(', ') }}</span></p> <!-- Apply the 'tags' class here -->
     </div>
-
-    <div class="mb-3">
-        <label for="discussionContent" class="form-label">Discussion Content:</label>
-        <textarea class="form-control" id="discussionContent" rows="3" required></textarea>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">Tags:</label>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="tag1" id="tag1">
-            <label class="form-check-label" for="tag1">Adventure</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="tag2" id="tag2">
-            <label class="form-check-label" for="tag2">Strategy</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="tag2" id="tag2">
-            <label class="form-check-label" for="tag2">Boss Fight</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="tag2" id="tag2">
-            <label class="form-check-label" for="tag2">Funny</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="tag2" id="tag2">
-            <label class="form-check-label" for="tag2">Other</label>
-        </div>
-        <!-- Add more tags as needed -->
-    </div>
-
-    <button type="submit" class="btn btn-primary">Post Discussion</button>
-</form>
+</div>
+{% endfor %}
 
 <hr>
 {% endblock %}
