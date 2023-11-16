@@ -24,6 +24,10 @@ def login():
 def new_login():
     return render_template("new_login.html")
 
+@app.route("/user_profile", methods=["GET"])
+def user_profile():
+    return render_template("user_profile.html")
+
 
 @app.route("/make_post", methods=["GET", "POST"])
 def make_post():
