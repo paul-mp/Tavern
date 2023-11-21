@@ -18,6 +18,8 @@ from models import User
 
 @app.route("/", methods=["GET"])
 def index():
+    if "username" in session:
+        return redirect("/post_login")
     return render_template("index.html")
 
 
