@@ -1,8 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for
-
+from flask import Flask, abort, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from models import User
 app = Flask(__name__)
 
 posts = []
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:abc@localhost/postgres"
+
+db = SQLAlchemy(app)
 
 
 @app.route("/", methods=["GET"])
@@ -14,10 +19,20 @@ def index():
 def profile():
     return render_template("profile.html")
 
+@app.post('/signup')
+def signup():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    if not username or not password:
+        abort(400)
+    new_user = User(username, password)
+    db.session.add(new_user)
+    db.session.commit()
+    return redirect('/index.html')
 
-@app.route("/login", methods=["GET"])
-def login():
-    return render_template("login.html")
+@app.route("/sign_up", methods=["GET"])
+def sign_up():
+    return render_template("sign_up.html")
 
 
 @app.route("/new_login", methods=["GET"])
