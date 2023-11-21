@@ -1,9 +1,8 @@
-CREATE TABLE IF NOT EXISTS Users(
-    username VARCHAR(255) UNIQUE NOT NULL,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    PRIMARY KEY (username)
+CREATE TABLE app_user (
+    user_id  SERIAL,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    PRIMARY KEY (user_id)
 );
 
 CREATE TABLE IF NOT EXISTS Characters(
