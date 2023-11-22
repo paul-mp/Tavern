@@ -1,20 +1,29 @@
-from flask import Flask, abort, render_template, request, redirect, url_for, session
+from flask import Flask, session, redirect, render_template, request, abort, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+username = os.getenv('DB_USERNAME')
+password = os.getenv('DB_PASSWORD')
+host = os.getenv('DB_HOST')
+port = os.getenv('DB_PORT') 
+dbname = os.getenv('DB_NAME')
+secret_key = os.getenv('SECRET_KEY')
+
+connection_string = f"postgresql://{username}:{password}@{host}:{port}/{dbname}"
+
 app = Flask(__name__)
 
-posts = []
+app.config["SQLALCHEMY_DATABASE_URI"] = connection_string
+app.secret_key = secret_key
 
-db = SQLAlchemy()
-
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:abc@localhost/postgres"
-#need a proper env file for this
-app.secret_key = 'super secret key'
-db.init_app(app)
+db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
 from models import User
-
 
 @app.route("/", methods=["GET"])
 def index():
@@ -22,9 +31,10 @@ def index():
         return redirect("/post_login")
     return render_template("index.html")
 
-
 @app.route("/profile", methods=["GET"])
 def profile():
+    if "username" not in session:
+        return redirect(url_for('login'))
     return render_template("profile.html")
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -33,6 +43,9 @@ def signup():
         username = request.form.get('username')
         raw_password = request.form.get('password')
         if not username or not raw_password:
+            abort(400)
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
             abort(400)
         hashed_password = bcrypt.generate_password_hash(raw_password, 12).decode()
         new_user = User(username, hashed_password)
@@ -59,25 +72,25 @@ def login():
     else:
         return render_template("login.html")
 
-
 @app.route("/sign_up", methods=["GET"])
 def sign_up():
     return render_template("sign_up.html")
 
-
 @app.route("/user_profile", methods=["GET"])
 def user_profile():
+    if "username" not in session:
+        return redirect(url_for('login'))
     return render_template("user_profile.html")
-
 
 @app.route("/make_post", methods=["GET", "POST"])
 def make_post():
+    if "username" not in session:
+        return redirect(url_for('login'))
+    
     if request.method == "POST":
         title = request.form["discussionTitle"]
         content = request.form["discussionContent"]
-        tags = request.form.getlist("tags")  # getting list of tags
-        # save the post data to a database
-        # add to posts list
+        tags = request.form.getlist("tags")
         posts.append({"title": title, "content": content, "tags": tags})
         return redirect(url_for("forum"))
     else:
@@ -86,10 +99,19 @@ def make_post():
 @app.get("/post_login")
 def post_login():
     if "username" not in session:
-        abort(401)
-    return render_template("post_login.html")
+        return abort(401)
+    return render_template("post_login.html", username=session["username"])
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    session.pop("username", None)
+    session.modified = True
+    return redirect("/")
 
 @app.route("/forum", methods=["GET"])
 def forum():
+    posts = []
+    if "username" not in session:
+        return redirect(url_for('login'))
     # Pass the list of posts to the forum template
     return render_template("forum.html", posts=posts)
