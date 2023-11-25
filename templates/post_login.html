@@ -1,5 +1,25 @@
 {% extends '_templates.html' %}
 {% block title %}Welcome{% endblock %}
 {% block body %}
-<h1 class="card-title text-white">Welcome back {{ username }}!</h1>
+<div class="center-content">
+    <main class="text-center">
+        <div class="container vh-100">
+            <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-12 text-center">
+                    <h1 class="card-title text-white">Welcome back {{ username }}!</h1>
+                    <br />
+                    <a href="/user_profile">
+                        <button type="submit" class="btn btn-primary btn-danger btn-lg mb-4 wide-button">Profile</button>
+                    </a>
+                    <a href="/forum">
+                        <button type="submit" class="btn btn-primary btn-danger btn-lg mb-4 wide-button">Forums</button>
+                    </a>
+                    <a href="/profile">
+                        <button type="submit" class="btn btn-primary btn-danger btn-lg mb-4 wide-button">Create Character</button>
+                    </a>
+                </div>
+            </div>
+        </div>  
+    </main>
+</div>
 {% endblock %}
