@@ -1,25 +1,32 @@
 {% extends '_templates.html' %}
-{% block title %}User_Profile{% endblock %}
+{% block title %}User Profile{% endblock %}
 {% block body %}
-<div class="user_profile">
-    <!-- User's profile pic -->
-
-    <!-- User's information -->
-    <div class="user-info">
-        <h1> Username </h1>
-        <p>Email: </p>
-
-        <h2>User's Characters</h2>
-        <ul><!-- Display user characters
-            
-        -->
-        </ul>
-
-        <h2>User's Posts</h2>
-        <ul><!-- Display user posts
-            
-        -->
-        </ul>
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body d-flex flex-column py-4"> 
+                    <div class="mb-auto">
+                        <i class="fas fa-user-tie fa-7x mt-5"></i>
+                        <h5 class="card-title text-black">Welcome, {{ username }}!</h5>
+                        <p class="card-text text-black">Welcome back to your profile {{ username }}. Here you are able to see all of your info</p>
+                    </div>    
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Profile Details
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Username: {{ username }}</li>
+                    <li class="list-group-item">Joined: {{ join_date }}</li>
+                    <li class="list-group-item">Character Name: {{ character_name }}</li>
+                    <li class="list-group-item">Character Class: {{ character_class }}</li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

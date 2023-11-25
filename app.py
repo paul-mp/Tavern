@@ -80,7 +80,12 @@ def sign_up():
 def user_profile():
     if "username" not in session:
         return redirect(url_for('login'))
-    return render_template("user_profile.html")
+    user = User.query.filter_by(username=session["username"]).first()
+    if user:
+        join_date = user.creation_date.strftime('%m/%d/%Y')
+        return render_template("user_profile.html", username=session["username"], join_date=join_date)
+    else:
+        return redirect(url_for('login'))
 
 @app.route("/make_post", methods=["GET", "POST"])
 def make_post():
