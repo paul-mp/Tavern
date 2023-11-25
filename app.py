@@ -39,38 +39,43 @@ def profile():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    error = None 
     if request.method == 'POST':
         username = request.form.get('username')
         raw_password = request.form.get('password')
+
         if not username or not raw_password:
-            abort(400)
-        existing_user = User.query.filter_by(username=username).first()
-        if existing_user:
-            abort(400)
-        hashed_password = bcrypt.generate_password_hash(raw_password, 12).decode()
-        new_user = User(username, hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-    else: 
-        return render_template("signup.html")
-    return redirect('/login')
+            error = "Invalid input."
+        else:
+            existing_user = User.query.filter_by(username=username).first()
+
+            if existing_user:
+                error = "Username already exists."
+            else:
+                hashed_password = bcrypt.generate_password_hash(raw_password, 12).decode()
+                new_user = User(username, hashed_password)
+                db.session.add(new_user)
+                db.session.commit()
+                return redirect('/login')
+    
+    return render_template("sign_up.html", error=error)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    error_message = None
     if request.method == "POST":
         username = request.form.get('username')
         raw_password = request.form.get('password')
         if not username or not raw_password:
-            abort(401)
-        existing_user = User.query.filter_by(username=username).first()
-        if not existing_user:
-            abort(401)
-        if not bcrypt.check_password_hash(existing_user.password, raw_password):
-            abort(401)
-        session['username'] = username
-        return redirect('/')
-    else:
-        return render_template("login.html")
+            error_message = 'Username and password are required.'
+        else:
+            existing_user = User.query.filter_by(username=username).first()
+            if not existing_user or not bcrypt.check_password_hash(existing_user.password, raw_password):
+                error_message = 'Incorrect username or password.'
+            else:
+                session['username'] = username
+                return redirect('/')
+    return render_template("login.html", error=error_message)
 
 @app.route("/sign_up", methods=["GET"])
 def sign_up():
