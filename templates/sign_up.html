@@ -9,11 +9,15 @@
                         <h2 class="text-center">Welcome</h2>
                     </div>
                     <div class="card-body">
-                        <!--Never again name two files something and new something for the love of god-->
+                        {% if error %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ error }}
+                            </div>
+                        {% endif %}
                         <form action="/signup" method="post">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username:</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
+                                <input type="text" class="form-control {% if error %}is-invalid{% endif %}" id="username" name="username" required>
                             </div>
 
                             <div class="mb-3">
