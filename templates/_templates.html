@@ -17,10 +17,18 @@
     <div class="container-fluid">
       <div class="dropdown">
         <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          </a><i class="fa-regular fa-user navbar-brand"></i>
+          <i class="fa-regular fa-user navbar-brand"></i>
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/login">Login</a></li>
+          {% if 'username' in session %}
+            <li><form action="/logout" method="post" style="margin: 0;">
+              <button type="submit" class="dropdown-item">Logout</button>
+            </form>
+            </li>
+          {% else %}
+            <li><a class="dropdown-item" href="/login">Login</a></li>
+            <li><a class="dropdown-item" href="/sign_up">Sign Up</a></li>
+          {% endif %}
         </ul>
       </div>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -32,14 +40,20 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/forum">Tavern</a>
-          <li class="nav-item">
-            <a class="nav-link" href="/make_post">Create Post</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/profile">Character</a>
-          </li>
+          {% if 'username' in session %}
+            <li class="nav-item">
+              <a class="nav-link" href="/forum">Forum</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/make_post">Create Post</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile">Character</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/user_profile">Profile</a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </div>
@@ -58,3 +72,4 @@
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>
 </body>
+</html>

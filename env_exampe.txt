@@ -1,0 +1,8 @@
+This is how the .env file is supposed to be set up:
+
+DB_USERNAME=
+DB_PASSWORD=
+DB_HOST=
+DB_PORT=
+DB_NAME=
+SECRET_KEY=
