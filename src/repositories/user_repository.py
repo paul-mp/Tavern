@@ -13,6 +13,15 @@ class UserRepository:
     def get_profile(self, user_id):
         pass
 
+    def get_char(self, user_id):
+        pass
+
+    def create_comment(self, post_id, comment):
+        pass
+
+    def get_comment(self, post_id):
+        pass
+
     def ____(self,):
         pass
 
