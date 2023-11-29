@@ -1,18 +1,39 @@
 {% extends '_templates.html' %}
-{% block title %}Forum{% endblock %}
-{% block body %}
-<h1>Forum</h1>
 
-<!-- show discussions -->
-{% for post in posts %}
-<div class="card mb-3">
-    <div class="card-body">
-        <h2 class="card-title">{{ post.title }}</h2>
-        <p class="card-text">{{ post.content }}</p>
-        <p><b>Tags:</b> <span class="tags">{{ post.tags|join(', ') }}</span></p> <!-- Apply the 'tags' class here -->
+{% block title %}Forum{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/forum.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="forum-container">
+    <h1>Forum Discussions</h1>
+    <div class="forum-posts">
+        {% for post in posts %}
+        <div class="forum-post">
+            <!-- The post title is now a clickable link -->
+            <h3 class="forum-post-title">
+                <a href="{{ url_for('show_post', post_id=post.id) }}">{{ post.title }}</a>
+            </h3>
+            <div class="forum-post-details">
+                By {{ post.user.username }}, {{ post.creation_date.strftime('%B %d, %Y') }}
+            </div>
+            <div class="forum-post-stats">
+                {{ post.replies_count }} replies | {{ post.views_count }} views
+            </div>
+            <div class="forum-post-actions">
+                {% if session["username"] == post.user.username %}
+                <a href="{{ url_for('edit_post', post_id=post.id) }}">Edit</a>
+                <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+                    <input type="submit" value="Delete">
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <p>No discussions to show.</p>
+        {% endfor %}
     </div>
 </div>
-{% endfor %}
-
-<hr>
 {% endblock %}
