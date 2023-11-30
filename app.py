@@ -8,13 +8,15 @@ from flask_migrate import Migrate
 
 load_dotenv()
 
-username = os.getenv("DB_USERNAME")
-password = os.getenv("DB_PASSWORD")
-host = os.getenv("DB_HOST")
-port = os.getenv("DB_PORT")
-dbname = os.getenv("DB_NAME")
-secret_key = os.getenv("SECRET_KEY")
+# Retrieve environment variables for database connection and secret key
+username = os.getenv('DB_USERNAME')
+password = os.getenv('DB_PASSWORD')
+host = os.getenv('DB_HOST')
+port = os.getenv('DB_PORT') 
+dbname = os.getenv('DB_NAME')
+secret_key = os.getenv('SECRET_KEY')
 
+# Create a connection string for the PostgreSQL database
 connection_string = f"postgresql://{username}:{password}@{host}:{port}/{dbname}"
 
 app = Flask(__name__)
@@ -29,21 +31,22 @@ migrate = Migrate(app, db)
 from models import User, Post
 
 
+# Defining a route for the index page
 @app.route("/", methods=["GET"])
 def index():
     if "username" in session:
         return redirect("/post_login")
     return render_template("index.html")
 
-
+# Defining a route for the user profile page
 @app.route("/profile", methods=["GET"])
 def profile():
     if "username" not in session:
         return redirect(url_for("login"))
     return render_template("profile.html")
 
-
-@app.route("/signup", methods=["GET", "POST"])
+# Defining a route for user registration
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
     error = None
     if request.method == "POST":
@@ -68,8 +71,8 @@ def signup():
 
     return render_template("sign_up.html", error=error)
 
-
-@app.route("/login", methods=["GET", "POST"])
+# Defining a route for user login
+@app.route('/login', methods=["GET", "POST"])
 def login():
     error_message = None
     if request.method == "POST":
@@ -88,12 +91,13 @@ def login():
                 return redirect("/")
     return render_template("login.html", error=error_message)
 
-
+# Defining a route for the sign-up page
 @app.route("/sign_up", methods=["GET"])
 def sign_up():
     return render_template("sign_up.html")
 
 
+# Defining a route for the user profile page after login
 @app.route("/user_profile", methods=["GET"])
 def user_profile():
     if "username" not in session:
@@ -108,6 +112,7 @@ def user_profile():
         return redirect(url_for("login"))
 
 
+# Defining a route for creating a new post
 @app.route("/make_post", methods=["GET", "POST"])
 def make_post():
     if "username" not in session:
@@ -130,7 +135,7 @@ def make_post():
     else:
         return render_template("make_post.html")
 
-
+# Defining a route for the login page
 @app.get("/post_login")
 def post_login():
     if "username" not in session:
@@ -138,6 +143,7 @@ def post_login():
     return render_template("post_login.html", username=session["username"])
 
 
+# Defining a route for the post-login page
 @app.route("/logout", methods=["POST"])
 def logout():
     session.pop("username", None)
@@ -145,6 +151,7 @@ def logout():
     return redirect("/")
 
 
+# Defining a route for user logout
 @app.route("/forum", methods=["GET"])
 def forum():
     posts = Post.query.all()
