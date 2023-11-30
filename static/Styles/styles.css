@@ -33,3 +33,54 @@ footer {
     position: sticky;
     bottom: 0;
 }
+
+.forum-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.forum-posts {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.forum-post {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+
+.forum-post-title a {
+    font-size: 1.2em;
+    color: #333;
+    text-decoration: none;
+}
+
+.forum-post-details {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.forum-post-stats {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.forum-post-actions a,
+.forum-post-actions input[type="submit"] {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #007bff;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.forum-post-actions form {
+    display: inline;
+}
