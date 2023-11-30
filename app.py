@@ -1,6 +1,10 @@
 from flask import Flask, session, redirect, render_template, request, abort, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
+from flask_wtf FlaskForm
+from flask_login import current_user
+from wtforms import TextAreaField, SubmitField
+from wtformt.validators import DataRequired
 import os
 from dotenv import load_dotenv
 
@@ -124,4 +128,29 @@ def forum():
     if "username" not in session:
         return redirect(url_for('login'))
     # Pass the list of posts to the forum template
+    posts = Post.query.all()
     return render_template("forum.html", posts=posts)
+
+@app.route("/post/new", methods=["GET", 'POST'])
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        //TODO 
+        //Make sure there is a post field in the data base sdf
+
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('forum'))
+    return render_template('make_post.html', title = 'New Post', form=form)
+
+@app.route("/post/<int:post_id>")
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title = post.title, post=post)
+
+class PostForm(FlaskForm):
+    title = String('Title', validators=[DataRequired()])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    submit = SubmitField('Post')
