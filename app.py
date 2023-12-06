@@ -1,20 +1,28 @@
-from flask import Flask, session, redirect, render_template, request, abort, url_for
+from flask import (
+    Flask,
+    session,
+    redirect,
+    render_template,
+    request,
+    abort,
+    url_for,
+    flash,
+)
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 import os
 from dotenv import load_dotenv
 from flask_migrate import Migrate
 
-
 load_dotenv()
 
 # Retrieve environment variables for database connection and secret key
-username = os.getenv('DB_USERNAME')
-password = os.getenv('DB_PASSWORD')
-host = os.getenv('DB_HOST')
-port = os.getenv('DB_PORT') 
-dbname = os.getenv('DB_NAME')
-secret_key = os.getenv('SECRET_KEY')
+username = os.getenv("DB_USERNAME")
+password = os.getenv("DB_PASSWORD")
+host = os.getenv("DB_HOST")
+port = os.getenv("DB_PORT")
+dbname = os.getenv("DB_NAME")
+secret_key = os.getenv("SECRET_KEY")
 
 # Create a connection string for the PostgreSQL database
 connection_string = f"postgresql://{username}:{password}@{host}:{port}/{dbname}"
@@ -28,7 +36,7 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 migrate = Migrate(app, db)
 
-from models import User, Post
+from models import User, Post, Reply
 
 
 # Defining a route for the index page
@@ -38,6 +46,7 @@ def index():
         return redirect("/post_login")
     return render_template("index.html")
 
+
 # Defining a route for the user profile page
 @app.route("/profile", methods=["GET"])
 def profile():
@@ -45,8 +54,9 @@ def profile():
         return redirect(url_for("login"))
     return render_template("profile.html")
 
+
 # Defining a route for user registration
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route("/signup", methods=["GET", "POST"])
 def signup():
     error = None
     if request.method == "POST":
@@ -71,8 +81,9 @@ def signup():
 
     return render_template("sign_up.html", error=error)
 
+
 # Defining a route for user login
-@app.route('/login', methods=["GET", "POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
     error_message = None
     if request.method == "POST":
@@ -90,6 +101,7 @@ def login():
                 session["username"] = username
                 return redirect("/")
     return render_template("login.html", error=error_message)
+
 
 # Defining a route for the sign-up page
 @app.route("/sign_up", methods=["GET"])
@@ -135,6 +147,7 @@ def make_post():
     else:
         return render_template("make_post.html")
 
+
 # Defining a route for the login page
 @app.get("/post_login")
 def post_login():
@@ -151,11 +164,15 @@ def logout():
     return redirect("/")
 
 
-# Defining a route for user logout
-@app.route("/forum", methods=["GET"])
-def forum():
-    posts = Post.query.all()
-    return render_template("forum.html", posts=posts)
+@app.route("/forum")
+@app.route("/forum/page/<int:page>")
+def forum(page=1):
+    per_page = 4
+    pagination = Post.query.order_by(Post.creation_date.desc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+    posts = pagination.items
+    return render_template("forum.html", posts=posts, pagination=pagination)
 
 
 @app.route("/delete_post/<int:post_id>", methods=["POST"])
@@ -193,4 +210,40 @@ def edit_post(post_id):
 @app.route("/posts/<int:post_id>")
 def show_post(post_id):
     post = Post.query.get_or_404(post_id)
-    return render_template("post_detail.html", post=post)
+    if post.views_count is None:
+        post.views_count = 0
+    post.views_count += 1
+    db.session.commit()
+    replies = (
+        Reply.query.filter_by(post_id=post.id)
+        .order_by(Reply.creation_date.desc())
+        .all()
+    )
+    return render_template("post_detail.html", post=post, replies=replies)
+
+
+@app.route("/submit_reply/<int:post_id>", methods=["POST"])
+def submit_reply(post_id):
+    if "username" not in session:
+        flash("You must be logged in to reply.")
+        return redirect(url_for("login"))
+
+    reply_content = request.form["reply_content"]
+    user = User.query.filter_by(username=session["username"]).first()
+
+    if user and reply_content:
+        # new Reply object with user.user_id
+        reply = Reply(content=reply_content, post_id=post_id, user_id=user.user_id)
+        db.session.add(reply)
+
+        # get Post object and +1 replies_count
+        post = Post.query.get(post_id)
+        if post.replies_count is None:
+            post.replies_count = 0
+        post.replies_count += 1
+        db.session.commit()
+        flash("Your reply has been posted.")
+    else:
+        flash("There was an error posting your reply.")
+
+    return redirect(url_for("show_post", post_id=post_id))
