@@ -4,21 +4,44 @@
 
 {% block body %}
 <div class="container">
-    <h1>{{ post.title }}</h1>
-    <p class="meta">By {{ post.user.username }} on {{ post.creation_date.strftime('%B %d, %Y') }}</p>
-    <div class="post-content">
-        {{ post.content | safe }}
-    </div>
-    <div class="forum-post-stats">
-        {{ post.replies_count }} replies | {{ post.views_count }} views
-    </div>
-    <div class="forum-post-actions">
-        {% if session["username"] == post.user.username %}
-        <a href="{{ url_for('edit_post', post_id=post.id) }}">Edit</a>
-        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
-            <input type="submit" value="Delete">
-        </form>
-        {% endif %}
+    <div class="forum-post">
+        <h1 class="post-title">{{ post.title }}</h1>
+        <p class="meta">By {{ post.user.username }} on {{ post.creation_date.strftime('%B %d, %Y') }}</p>
+        <div class="post-content">
+            {{ post.content | safe }}
+        </div>
+        <div class="forum-post-stats">
+            {{ post.replies_count }} replies | {{ post.views_count }} views
+        </div>
+        <div class="forum-post-actions">
+            {% if session["username"] == post.user.username %}
+            <a href="{{ url_for('edit_post', post_id=post.id) }}">Edit</a>
+            <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post">
+                <input type="submit" value="Delete">
+            </form>
+            {% endif %}
+            <div class="reply-form">
+                {% if 'username' in session %}
+                <form action="{{ url_for('submit_reply', post_id=post.id) }}" method="post">
+                    <textarea name="reply_content" required></textarea>
+                    <input type="submit" value="Reply">
+                </form>
+                {% else %}
+                <p>You must be logged in to reply.</p>
+                {% endif %}
+            </div>
+            <!-- Below the reply form -->
+            <div class="replies">
+                <h3>Replies</h3>
+                {% for reply in replies %}
+                <div class="reply">
+                    <p>{{ reply.content }}</p>
+                    <p class="meta">By {{ reply.user.username }} on {{ reply.creation_date.strftime('%B %d, %Y') }}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
     </div>
 </div>
 {% endblock %}

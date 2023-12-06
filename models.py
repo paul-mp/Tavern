@@ -22,3 +22,16 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("app_user.user_id"))
     creation_date = db.Column(db.DateTime, default=datetime.utcnow)
     updated_date = db.Column(db.DateTime, onupdate=datetime.utcnow)
+    replies_count = db.Column(db.Integer, default=0)
+    views_count = db.Column(db.Integer, default=0)
+
+
+class Reply(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("app_user.user_id"), nullable=False)
+    creation_date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship("User", backref="replies")
+    post = db.relationship("Post", backref="replies")
