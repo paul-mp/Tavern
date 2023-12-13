@@ -22,6 +22,7 @@
         <ul class="dropdown-menu">
           {% if 'username' in session %}
           <li>
+            <a class="dropdown-item" href="/user_profile">Profile</a>
             <form action="/logout" method="post" style="margin: 0;">
               <button type="submit" class="dropdown-item">Logout</button>
             </form>
@@ -48,9 +49,6 @@
           <li class="nav-item">
             <a class="nav-link" href="/make_post">Create Post</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/user_profile">Profile</a>
-          </li>
           {% endif %}
         </ul>
       </div>
@@ -64,8 +62,9 @@
     </div>
   </div>
   <call-us-selector phonesystem-url="https://1614.3cx.cloud" party="paulmaslov"></call-us-selector>
- 
-  <script defer src="https://downloads-global.3cx.com/downloads/livechatandtalk/v1/callus.js" id="tcx-callus-js" charset="utf-8"></script>
+
+  <script defer src="https://downloads-global.3cx.com/downloads/livechatandtalk/v1/callus.js" id="tcx-callus-js"
+    charset="utf-8"></script>
   <footer class="bg-danger text-white text-center py-3">
     Tavern
   </footer>
