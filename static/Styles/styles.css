@@ -168,9 +168,28 @@ footer {
     padding: 3px;
 }
 
-.vip_icon{
+.vip_icon {
     width: 24px;
-    height: 24px; 
+    height: 24px;
     background-size: cover;
     background-position: center;
+}
+
+@media screen and (min-width: 1200px) {
+    body {
+        font-size: 18px;
+    }
+
+    .forum-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .forum-post {
+        padding: 30px;
+    }
+
+    .forum-post-title a {
+        font-size: 1.5em;
+    }
 }
