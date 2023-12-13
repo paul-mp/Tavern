@@ -47,14 +47,6 @@ def index():
     return render_template("index.html")
 
 
-# Defining a route for the user profile page
-@app.route("/profile", methods=["GET"])
-def profile():
-    if "username" not in session:
-        return redirect(url_for("login"))
-    return render_template("profile.html")
-
-
 # Defining a route for user registration
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
