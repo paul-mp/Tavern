@@ -44,7 +44,7 @@ from models import User, Post, Reply
 def index():
     if "username" in session:
         return redirect("/post_login")
-    return render_template("index.html")
+    return render_template("index.html", index_active=True)
 
 
 # Defining a route for user registration
@@ -137,7 +137,7 @@ def make_post():
         else:
             pass
     else:
-        return render_template("make_post.html")
+        return render_template("make_post.html", create_active=True)
 
 
 # Defining a route for the login page
@@ -164,7 +164,7 @@ def forum(page=1):
         page=page, per_page=per_page, error_out=False
     )
     posts = pagination.items
-    return render_template("forum.html", posts=posts, pagination=pagination)
+    return render_template("forum.html", posts=posts, pagination=pagination, forum_active=True)
 
 
 @app.route("/delete_post/<int:post_id>", methods=["POST"])
