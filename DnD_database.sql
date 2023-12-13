@@ -11,16 +11,9 @@ CREATE TABLE IF NOT EXISTS Characters(
     race VARCHAR(25) NOT NULL,
     class VARCHAR(25) NOT NULL,
     character_name VARCHAR(255) NOT NULL,
-    strength_attribute int NOT NULL,
-    dexterity_attribute int NOT NULL,
-    constitution_attribute int NOT NULL,
-    intelligence_attribute int NOT NULL,
-    wisdom_attribute int NOT NULL,
-    charisma_attribute int NOT NULL,
-    character_level int NOT NULL,
     background VARCHAR(500) NOT NULL,
     PRIMARY KEY (character_id),
-    FOREIGN KEY (username) REFERENCES Users(username)
+    FOREIGN KEY (username) REFERENCES app_user(username)
 );
 
 CREATE TABLE IF NOT EXISTS Forum_posts(
@@ -28,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Forum_posts(
     post_id SERIAL NOT NULL, 
     discussion_post VARCHAR(255) NOT NULL,
     PRIMARY KEY (post_id),
-    FOREIGN KEY (username) REFERENCES Users(username)
+    FOREIGN KEY (username) REFERENCES app_user(username)
 );
 
 CREATE TABLE IF NOT EXISTS Forum_comments(
@@ -36,6 +29,6 @@ CREATE TABLE IF NOT EXISTS Forum_comments(
     post_id SERIAL NOT NULL,
     discussion_comment VARCHAR(255) NOT NULL,
     PRIMARY KEY (post_id, username),
-    FOREIGN KEY (username) REFERENCES Users(username),
+    FOREIGN KEY (username) REFERENCES app_user(username),
     FOREIGN KEY (post_id) REFERENCES Forum_posts(post_id)
 );
