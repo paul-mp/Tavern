@@ -2,6 +2,8 @@ CREATE TABLE app_user (
     user_id  SERIAL,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    vip boolean NOT NULL,
+    battle_scars INTEGER NOT NULL,
     PRIMARY KEY (user_id)
 );
 
