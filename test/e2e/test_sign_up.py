@@ -1,7 +1,10 @@
 from models import User
 from app import app
+from models import Post
 
 def test_sign_up(test_app):
+    Post.query.filter(Post.title=='How To Kill the Beholder').delete()
+    Post.query.filter(Post.title=='Test').delete()
     User.query.filter(User.username=='test_user10').delete()
 
     response = test_app.get('/signup')
