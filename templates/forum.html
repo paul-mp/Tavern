@@ -9,15 +9,46 @@
 {% block body %}
 <div class="forum-container">
     <h1>Forum Discussions</h1>
-    <div class="forum-posts">
+
+    <form action="{{ url_for('forum') }}" method="get" class="tag-filter-form">
+        <select name="tag">
+            <option value="">All Tags</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Strategy">Strategy</option>
+            <option value="Boss Fight">Boss Fight</option>
+            <option value="Funny">Funny</option>
+            <option value="Other">Other</option>
+        </select>
+        <select name="sort_date">
+            <option value="">Sort by Date</option>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+        </select>
+        <select name="sort_interactions">
+            <option value="">Sort by Interactions</option>
+            <option value="most_replies">Most Replies</option>
+            <option value="most_views">Most Views</option>
+        </select>
+        <input type="submit" value="Filter">
+    </form>
+
+    <div class="forum-post">
+        <!-- The post title is now a clickable link -->
         {% for post in posts %}
         <div class="forum-post">
-            <!-- The post title is now a clickable link -->
             <h3 class="forum-post-title">
                 <a href="{{ url_for('show_post', post_id=post.id) }}">{{ post.title }}</a>
             </h3>
             <div class="forum-post-details">
                 By {{ post.user.username }}, {{ post.creation_date.strftime('%B %d, %Y') }}
+            </div>
+            <div class="forum-post-tags">
+                {% if post.tags %}
+                {% set tag_list = post.tags.split(', ') %}
+                {% for tag in tag_list %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+                {% endif %}
             </div>
             <div class="forum-post-stats">
                 {{ post.replies_count }} replies | {{ post.views_count }} views

@@ -66,7 +66,7 @@ def signup():
                 hashed_password = bcrypt.generate_password_hash(
                     raw_password, 12
                 ).decode()
-                new_user = User(username = username, password = hashed_password)
+                new_user = User(username=username, password=hashed_password)
                 db.session.add(new_user)
                 db.session.commit()
                 return redirect("/login")
@@ -109,12 +109,16 @@ def user_profile():
     user = User.query.filter_by(username=session["username"]).first()
     if user:
         join_date = user.creation_date.strftime("%m/%d/%Y")
-        battle_scars= user.battle_scars
-        if(user.battle_scars >= 250):
+        battle_scars = user.battle_scars
+        if user.battle_scars >= 250:
             user.vip = True
             db.session.commit()
         return render_template(
-            "user_profile.html", username=session["username"], join_date=join_date, battle_scars =  battle_scars, vip = user.vip
+            "user_profile.html",
+            username=session["username"],
+            join_date=join_date,
+            battle_scars=battle_scars,
+            vip=user.vip,
         )
     else:
         return redirect(url_for("login"))
@@ -164,12 +168,45 @@ def logout():
 @app.route("/forum")
 @app.route("/forum/page/<int:page>")
 def forum(page=1):
+    tag_filter = request.args.get("tag")
+    sort_date = request.args.get("sort_date")
+    sort_interactions = request.args.get("sort_interactions")
     per_page = 4
-    pagination = Post.query.order_by(Post.creation_date.desc()).paginate(
-        page=page, per_page=per_page, error_out=False
-    )
+
+    posts_query = Post.query
+
+    # tags sort
+    if tag_filter:
+        posts_query = posts_query.filter(Post.tags.like(f"%{tag_filter}%"))
+
+    # by date
+    if sort_date == "newest":
+        posts_query = posts_query.order_by(Post.creation_date.desc())
+    elif sort_date == "oldest":
+        posts_query = posts_query.order_by(Post.creation_date.asc())
+
+    # interactions sort
+    if sort_interactions == "most_replies":
+        posts_query = posts_query.order_by(Post.replies_count.desc())
+    elif sort_interactions == "most_views":
+        posts_query = posts_query.order_by(Post.views_count.desc())
+
+    # default to newest first
+    if not sort_date and not sort_interactions:
+        posts_query = posts_query.order_by(Post.creation_date.desc())
+
+    pagination = posts_query.paginate(page=page, per_page=per_page, error_out=False)
     posts = pagination.items
-    return render_template("forum.html", posts=posts, pagination=pagination, forum_active=True)
+
+    return render_template(
+        "forum.html",
+        posts=posts,
+        pagination=pagination,
+        forum_active=True,
+        current_tag=tag_filter,
+        sort_date=sort_date,
+        sort_interactions=sort_interactions,
+    )
 
 
 @app.route("/delete_post/<int:post_id>", methods=["POST"])
@@ -249,11 +286,11 @@ def submit_reply(post_id):
     @app.route("/user_profile")
     def purchase_vip():
         error_message = None
-        if(user.battle_scars == 250):
+        if user.battle_scars == 250:
             user.vip = True
             db.session.commit
-            
+
         else:
             error_message = "Not Enough Battle Scars"
-        
-        return render_template("/user_profile", error = error_message)
+
+        return render_template("/user_profile", error=error_message)
