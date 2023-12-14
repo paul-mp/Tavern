@@ -1,4 +1,3 @@
-from models import User
 from app import app
 
 def test_login(test_app):
@@ -11,6 +10,8 @@ def test_login(test_app):
     response = test_app.post('/login',data={'username':'test_user10','password':'abc190'},follow_redirects=True)
 
     assert response.status_code == 200
+
+    assert b'Create Post' in response.data
 
     assert b'Welcome back' in response.data
 
