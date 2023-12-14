@@ -114,7 +114,7 @@ def user_profile():
             user.vip = True
             db.session.commit()
         return render_template(
-            "user_profile.html", username=session["username"], join_date=join_date, battle_scars =  battle_scars, vip = user.vip
+            "user_profile.html", username=session["username"], join_date=join_date, battle_scars =  user.battle_scars, vip = user.vip
         )
     else:
         return redirect(url_for("login"))
