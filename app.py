@@ -109,6 +109,7 @@ def user_profile():
     user = User.query.filter_by(username=session["username"]).first()
     if user:
         join_date = user.creation_date.strftime("%m/%d/%Y")
+
         battle_scars = user.battle_scars
         if user.battle_scars >= 250:
             user.vip = True
@@ -282,15 +283,3 @@ def submit_reply(post_id):
         flash("There was an error posting your reply.")
 
     return redirect(url_for("show_post", post_id=post_id))
-
-    @app.route("/user_profile")
-    def purchase_vip():
-        error_message = None
-        if user.battle_scars == 250:
-            user.vip = True
-            db.session.commit
-
-        else:
-            error_message = "Not Enough Battle Scars"
-
-        return render_template("/user_profile", error=error_message)
