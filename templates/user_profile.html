@@ -20,7 +20,7 @@
                     Profile Details
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item" {% if vip %}class="bs-danger" {% endif %}>Username: {{ username }}</li>
+                    <li class="list-group-item">Username: <span {% if vip %}class="text-success"{% endif %}>{{ username }}</span></li>
                     <li class="list-group-item">Joined: {{ join_date }}</li>
                     <li class="list-group-item">Battle Scars: {{ battle_scars }}</li>
                     <li class="list-group-item">250 Battle Scars Needed</li>
