@@ -1,8 +1,12 @@
 from models import User
 from app import app
 from models import Post
+from models import Reply
 
 def test_delete_post(test_app):
+    Reply.query.filter(Reply.content=='Test').delete()
+    Post.query.filter(Post.title=='Test').delete()
+    Post.query.filter(Post.title=='Test1').delete()
     response = test_app.post('/login',data={'username':'test_user10','password':'abc190'},follow_redirects=True)
 
     assert response.status_code == 200
@@ -13,11 +17,8 @@ def test_delete_post(test_app):
 
     assert b'Test' in response.data
 
-    post = Post.query.filter(Post.title == 'test').first()
+    post = Post.query.filter(Post.title == 'Test').first()
 
-    if post:
-        post_id = post.id
-
-    response = test_app.post('/delete_post/{post_id}',follow_redirects=True)
+    response = test_app.post(f'/delete_post/{post.id}',follow_redirects=True)
 
     assert b'Test' not in response.data

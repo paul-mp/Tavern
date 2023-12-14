@@ -4,11 +4,10 @@ from models import Post
 def test_edit_post(test_app):
     response = test_app.post('/login',data={'username':'test_user10','password':'abc190'},follow_redirects=True)
 
-    post = Post.query.filter(Post.title == 'test1').first()
+    response = test_app.post('/make_post',data={'discussionTitle':'Test','discussionContent':'Test', 'tags' : ['Boss Fight','Strategy']},follow_redirects=True)
 
-    if post:
-        post_id = post.id
+    post = Post.query.filter(Post.title == 'Test').first()
 
-    response = test_app.post('/posts/{post_id}')
+    response = test_app.post(f'/posts/{post.id}')
 
-    assert b'Test1' in response.data
+    assert b'Test' in response.data
