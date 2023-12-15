@@ -8,6 +8,6 @@ def test_edit_post(test_app):
 
     post = Post.query.filter(Post.title == 'Test').first()
 
-    response = test_app.post(f'/posts/{post.id}')
+    response = test_app.get(f'/posts/{post.id}')
 
     assert b'Test' in response.data
